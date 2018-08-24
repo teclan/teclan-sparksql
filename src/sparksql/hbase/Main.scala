@@ -16,6 +16,8 @@ object Main {
   def main(args: Array[String]): Unit = {
 
     val sparkConf = new SparkConf().setMaster("spark://10.0.88.42:7077").setAppName("teclan");
+    var zookeeperClientPort = "2181";
+    var zookeeperQuorum = "10.0.88.42";
 
     val sc = new SparkContext(sparkConf)
     val sqlContext = new SQLContext(sc)
@@ -23,14 +25,18 @@ object Main {
     var student = sqlContext.read.format("sparksql.hbase").options(Map(
       "sparksql_table_schema" -> "(id string, name string,cls_id string,created_at string)",
       "hbase_table_name" -> "student1",
-      "hbase_table_schema" -> "(stu:id , stu:name,stu:cls_id,stu:created_at)")).load()
+      "hbase_table_schema" -> "(stu:id , stu:name,stu:cls_id,stu:created_at)",
+      "zookeeper_clientPort" -> zookeeperClientPort,
+      "zookeeper_quorum" -> zookeeperQuorum)).load()
     student.printSchema()
     student.registerTempTable("student")
 
     var cls = sqlContext.read.format("sparksql.hbase").options(Map(
       "sparksql_table_schema" -> "(id string, name string,created_at string)",
       "hbase_table_name" -> "cls",
-      "hbase_table_schema" -> "(cls:id , cls:name,cls:created_at)")).load()
+      "hbase_table_schema" -> "(cls:id , cls:name,cls:created_at)",
+      "zookeeper_clientPort" -> zookeeperClientPort,
+      "zookeeper_quorum" -> zookeeperQuorum)).load()
     cls.printSchema()
     cls.registerTempTable("cls")
 
