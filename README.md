@@ -3,7 +3,7 @@
 ## 本项目依赖的第三方包
 
  [点击下载]( https://pan.baidu.com/s/1QmNHvbCqrTPmCkSnXWoPgQ)，将下载的
- `lib`目录放到项目跟目录下即可。本人亲测的测试环境是:
+ `lib`目录放到项目根目录下即可。本人的测试环境是:
  
  ```
  spark:1.6.2
