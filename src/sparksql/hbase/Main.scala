@@ -28,7 +28,7 @@ object Main {
       "hbase_table_schema" -> "(stu:id , stu:name,stu:cls_id,stu:created_at)",
       "zookeeper_clientPort" -> zookeeperClientPort,
       "zookeeper_quorum" -> zookeeperQuorum)).load()
-    student.printSchema()
+    //student.printSchema()
     student.registerTempTable("student")
 
     var cls = sqlContext.read.format("sparksql.hbase").options(Map(
@@ -37,41 +37,44 @@ object Main {
       "hbase_table_schema" -> "(cls:id , cls:name,cls:created_at)",
       "zookeeper_clientPort" -> zookeeperClientPort,
       "zookeeper_quorum" -> zookeeperQuorum)).load()
-    cls.printSchema()
+    //cls.printSchema()
     cls.registerTempTable("cls")
 
     var begin = Calendar.getInstance.getTimeInMillis.toInt;
-    var stuRecords = sqlContext.sql("SELECT * from student limit 10");
     var end = Calendar.getInstance.getTimeInMillis.toInt;
-    println("\n======== SELECT * from student，耗时（秒）: " + ((end - begin) * 1.0 / 1000))
-    stuRecords.show(10);
+
+//    begin = Calendar.getInstance.getTimeInMillis.toInt;
+//    var stuRecords = sqlContext.sql("SELECT * from student limit 10");
+//    end = Calendar.getInstance.getTimeInMillis.toInt;
+//    println("\n======== SELECT * from student，耗时（秒）: " + ((end - begin) * 1.0 / 1000))
+//    stuRecords.show(10);
+//
+//    begin = Calendar.getInstance.getTimeInMillis.toInt;
+//    var stuCount = sqlContext.sql("SELECT count(*) from student ");
+//    end = Calendar.getInstance.getTimeInMillis.toInt;
+//    println("\n======== SELECT count(*) from student，耗时（秒）: " + ((end - begin) * 1.0 / 1000))
+//    stuCount.show(1);
+//
+//    begin = Calendar.getInstance.getTimeInMillis.toInt;
+//    var clsRecords = sqlContext.sql("SELECT * from cls limit 10");
+//    end = Calendar.getInstance.getTimeInMillis.toInt;
+//    println("\n======== SELECT * from cls，耗时（秒）: " + ((end - begin) * 1.0 / 1000))
+//    clsRecords.show(10);
+//
+//    begin = Calendar.getInstance.getTimeInMillis.toInt;
+//    var clsCount = sqlContext.sql("SELECT count(*) from cls");
+//    end = Calendar.getInstance.getTimeInMillis.toInt;
+//    println("\n======== SELECT count(*) from cls，耗时（秒）: " + ((end - begin) * 1.0 / 1000))
+//    clsCount.show(1);
+//
+//    begin = Calendar.getInstance.getTimeInMillis.toInt;
+//    var joinRecords = sqlContext.sql("SELECT student.*,cls.name as class_name from student left join cls on student.cls_id=cls.id limit 10");
+//    end = Calendar.getInstance.getTimeInMillis.toInt;
+//    println("\n======== 联合查询，耗时（秒）: " + ((end - begin) * 1.0 / 1000))
+//    joinRecords.show(10);
 
     begin = Calendar.getInstance.getTimeInMillis.toInt;
-    var stuCount = sqlContext.sql("SELECT count(*) from student ");
-    end = Calendar.getInstance.getTimeInMillis.toInt;
-    println("\n======== SELECT count(*) from student，耗时（秒）: " + ((end - begin) * 1.0 / 1000))
-    stuCount.show(1);
-
-    begin = Calendar.getInstance.getTimeInMillis.toInt;
-    var clsRecords = sqlContext.sql("SELECT * from cls limit 10");
-    end = Calendar.getInstance.getTimeInMillis.toInt;
-    println("\n======== SELECT * from cls，耗时（秒）: " + ((end - begin) * 1.0 / 1000))
-    clsRecords.show(10);
-
-    begin = Calendar.getInstance.getTimeInMillis.toInt;
-    var clsCount = sqlContext.sql("SELECT count(*) from cls");
-    end = Calendar.getInstance.getTimeInMillis.toInt;
-    println("\n======== SELECT count(*) from cls，耗时（秒）: " + ((end - begin) * 1.0 / 1000))
-    clsCount.show(1);
-
-    begin = Calendar.getInstance.getTimeInMillis.toInt;
-    var joinRecords = sqlContext.sql("SELECT student.*,cls.name as class_name from student left join cls where student.cls_id=cls.id limit 10");
-    end = Calendar.getInstance.getTimeInMillis.toInt;
-    println("\n======== 联合查询，耗时（秒）: " + ((end - begin) * 1.0 / 1000))
-    joinRecords.show(10);
-
-    begin = Calendar.getInstance.getTimeInMillis.toInt;
-    var joinCount = sqlContext.sql("SELECT count(student.id) from student left join cls where student.cls_id=cls.id");
+    var joinCount = sqlContext.sql("SELECT count(student.id) from student left join cls on student.cls_id=cls.id");
     end = Calendar.getInstance.getTimeInMillis.toInt;
     println("\n======== 联合统计，耗时（秒）: " + ((end - begin) * 1.0 / 1000))
     joinCount.show(1);
